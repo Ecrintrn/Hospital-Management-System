@@ -11,7 +11,7 @@ class Hasta:
             CREATE TABLE IF NOT EXISTS Hasta (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                bithdate DATE NOT NULL,
+                birthdate DATE NOT NULL,
                 identity VARCHAR(11) NOT NULL,
                 specialization VARCHAR(150) NOT NULL,
                 doctor_name VARCHAR(150) NOT NULL,

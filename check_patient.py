@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
     
     def open_update_patient_window(self, identity):
         self.update_window = QtWidgets.QMainWindow()
-        self.ui = Ui_UpdatePatientWindow()
+        #self.ui = Ui_UpdatePatientWindow()
         self.ui.setupUi(self.update_window, identity)
         self.update_window.show()
 

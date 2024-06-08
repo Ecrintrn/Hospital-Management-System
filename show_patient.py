@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem
 
 
-class Ui_MainWindow(object):
+class Ui_ShowPatient(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(810, 446)
@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
-        self.btn_update_data.clicked.connect(self.update_data)
+        self.pushButton_4.clicked.connect(self.update_data)
         
         self.hasta = Hasta.Hasta() 
 

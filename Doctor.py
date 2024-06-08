@@ -5,6 +5,9 @@ class Doktor:
         self.conn = sqlite3.connect('hastane.db')
         self.cursor = self.conn.cursor()
         self.create_table()
+        self.academic_rank = ["Research Assistant", "Assistant Professor", "Lecturer", "Doctor Lecturer", "Associate Professor", "Professor Doctor"]
+        self.specialization = ["Ear Nose Throat (ENT)", "Internal Medicine", "Neurology", "Dermatology", "Emergency Service", "Infectious Diseases"]
+        self.doctor_name = []
         
     def create_table(self):
         self.cursor.execute('''
@@ -21,10 +24,11 @@ class Doktor:
         
     def add_doctor(self, doktor_name, doctor_surname, academic_rank, specialization, password):
         self.cursor.execute("INSERT INTO Doctors (doktor_name, doctor_surname, academic_rank, specialization, password) VALUES (?, ?, ?, ?, ?)",(doktor_name, doctor_surname, academic_rank, specialization, password))
-        self.conn.commit()                    
+        self.conn.commit()
+        self.doctor_name.append(doktor_name)                    
         print(f"{doktor_name} {doctor_surname} başarılı bir şekilde eklendi.")
         
-    def update_docotr(self, doktor_name, doctor_surname, academic_rank, specialization, password):
+    def update_doctor(self, doktor_name, doctor_surname, academic_rank, specialization, password):
         self.cursor.execute("UPDATE Doctors SET doktor_name=?, doctor_surname=?, academic_rank=?, specialization=?, password=?",(self, doktor_name, doctor_surname, academic_rank, specialization, password))
                             
     def show_doctors(self):
@@ -33,7 +37,7 @@ class Doktor:
         print("\n***** {Doctors.upper()} *****")
         for doctor in doctors:
             print(f"Doctor Name : {doctor[1]}, Doctor Surname : {doctor[2]}, Doctor's Academic Rank : {doctor[3]}, Doctor's specialization : {doctor[4]}")
-            
+    
     def ilac_yazma(self):
         pass
           
