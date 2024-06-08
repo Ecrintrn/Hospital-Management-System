@@ -88,6 +88,10 @@ class Ui_MainWindow(object):
         # Hasta instance
         self.hasta = Hasta.Hasta()
         
+        self.box_spe.addItems(self.doctor.specialization)
+        self.box_dctr_name.addItems(self.doctor_name)
+        self.box_triage_clr.addItems(self.triage_color)
+        
         # Connect the save button to the add_patient function
         self.btn_save.clicked.connect(self.add_patient)
         

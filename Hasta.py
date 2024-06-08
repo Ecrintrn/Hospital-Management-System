@@ -5,13 +5,14 @@ class Hasta:
         self.conn = sqlite3.connect('hastane.db')
         self.cursor = self.conn.cursor()
         self.create_table()
+        self.triage_color("White", "Red", "Yellow", "Black")
         
     def create_table(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Hasta (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                birthdate DATE NOT NULL,
+                bithdate DATE NOT NULL,
                 identity VARCHAR(11) NOT NULL,
                 specialization VARCHAR(150) NOT NULL,
                 doctor_name VARCHAR(150) NOT NULL,
@@ -21,12 +22,12 @@ class Hasta:
         self.conn.commit()
 
     def hasta_ekle(self, name, birthdate, identity, specialization, doctor_name, triage_color):
-        self.cursor.execute("INSERT INTO Hasta (name, birthdate, identity, specialization, doctor_name, triage_color) VALUES (?, ?, ?, ?, ?, ?)", (name, birthdate, identity, specialization, doctor_name, triage_color))
+        self.cursor.execute("INSERT INTO Hasta (name, bithdate, identity, specialization, doctor_name, triage_color) VALUES (?, ?, ?, ?, ?, ?)", (name, birthdate, identity, specialization, doctor_name, triage_color))
         self.conn.commit()
         print(f"{name} eklendi.")
 
     def hasta_guncelle(self, name, birthdate, identity, specialization, doctor_name, triage_color):
-        self.cursor.execute("UPDATE Hasta SET name=?, birthdate=?, identity=?, specialization=?, doctor_name=?, triage_color=? WHERE identity=?", (name, birthdate, identity, specialization, doctor_name, triage_color, identity))
+        self.cursor.execute("UPDATE Hasta SET name=?, bithdate=?, identity=?, specialization=?, doctor_name=?, triage_color=? WHERE identity=?", (name, birthdate, identity, specialization, doctor_name, triage_color, identity))
         self.conn.commit()
         print(f"{identity} kimlik numaralı hasta güncellendi.")
 

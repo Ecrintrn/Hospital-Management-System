@@ -55,3 +55,6 @@ class Ui_MainWindow(object):
         self.btn_dktr_gncl.setText(_translate("MainWindow", "Update Doctor"))
         self.btn_dktr_sl.setText(_translate("MainWindow", "Delete Doctor"))
         self.pushButton.setText(_translate("MainWindow", "Update Password"))
+
+    def open_add_doctor(self):
+        

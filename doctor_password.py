@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
 
     def load_passwords(self):
         for password in self.passwords:
-            self.passwordList.addItem(password)
+            self.passwords.addItem(password)
 
 if __name__ == "__main__":
     import sys

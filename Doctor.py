@@ -33,7 +33,7 @@ class Doktor:
                             
     def show_doctors(self):
         self.cursor.execute("SELECT * FROM Doctors")
-        doctors = self.cursor.execute.fetchall()
+        doctors = self.cursor.fetchall()
         print("\n***** {Doctors.upper()} *****")
         for doctor in doctors:
             print(f"Doctor Name : {doctor[1]}, Doctor Surname : {doctor[2]}, Doctor's Academic Rank : {doctor[3]}, Doctor's specialization : {doctor[4]}")

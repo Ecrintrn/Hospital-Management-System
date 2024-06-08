@@ -64,13 +64,11 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
+
         self.doctor = Doctor.Doktor()
-        self.academic_rank = []
-        self.academic_rank.append(Doctor.Doktor.return_list()) # Doctor modülünden uzmanlık alanlarını yüklüyoruz
-        
-        self.box_aca_rank.addItems(self.academic_rank)
-        self.box_dctr_spe.addItems(self.specialization)
+
+        self.box_aca_rank.addItems(self.doctor.academic_rank)
+        self.box_dctr_spe.addItems(self.doctor.specialization)
         
         self.btn_dctr_save.clicked.connect(self.add_doctor)  # Düğmeyi metodumuza bağladık
 
