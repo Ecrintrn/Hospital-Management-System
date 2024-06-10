@@ -1,18 +1,18 @@
 import sqlite3
 
-class Hasta:
-    def __init__ (self):
-        self.conn = sqlite3.connect('hastane.db')
+class Patient:
+    def __init__(self):
+        self.conn = sqlite3.connect('hospital.db')
         self.cursor = self.conn.cursor()
         self.create_table()
         self.triage_color("White", "Red", "Yellow", "Black")
         
     def create_table(self):
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Hasta (
+            CREATE TABLE IF NOT EXISTS Patients (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                bithdate DATE NOT NULL,
+                birthdate DATE NOT NULL,
                 identity VARCHAR(11) NOT NULL,
                 specialization VARCHAR(150) NOT NULL,
                 doctor_name VARCHAR(150) NOT NULL,
@@ -21,43 +21,43 @@ class Hasta:
         ''')
         self.conn.commit()
 
-    def hasta_ekle(self, name, birthdate, identity, specialization, doctor_name, triage_color):
-        self.cursor.execute("INSERT INTO Hasta (name, bithdate, identity, specialization, doctor_name, triage_color) VALUES (?, ?, ?, ?, ?, ?)", (name, birthdate, identity, specialization, doctor_name, triage_color))
+    def add_patient(self, name, birthdate, identity, specialization, doctor_name, triage_color):
+        self.cursor.execute("INSERT INTO Patients (name, birthdate, identity, specialization, doctor_name, triage_color) VALUES (?, ?, ?, ?, ?, ?)", (name, birthdate, identity, specialization, doctor_name, triage_color))
         self.conn.commit()
-        print(f"{name} eklendi.")
+        print(f"{name} is added.")
 
-    def hasta_guncelle(self, name, birthdate, identity, specialization, doctor_name, triage_color):
-        self.cursor.execute("UPDATE Hasta SET name=?, bithdate=?, identity=?, specialization=?, doctor_name=?, triage_color=? WHERE identity=?", (name, birthdate, identity, specialization, doctor_name, triage_color, identity))
+    def update_patient(self, name, birthdate, identity, specialization, doctor_name, triage_color):
+        self.cursor.execute("UPDATE Patients SET name=?, birthdate=?, identity=?, specialization=?, doctor_name=?, triage_color=? WHERE identity=?", (name, birthdate, identity, specialization, doctor_name, triage_color, identity))
         self.conn.commit()
-        print(f"{identity} kimlik numaralı hasta güncellendi.")
+        print(f"Patient with id no {identity} is updated.")
 
-    def hastalari_listele(self):
-        self.cursor.execute("SELECT * FROM Hasta")
-        hastalar = self.cursor.fetchall()
-        print(f"\n***** {self.tablo_adi.upper()} *****")
-        for hasta in hastalar:
-            identity  = hasta[3][:3] + '*' * (len(hasta[3] - 3))
-            print(f"Sıra No: {hasta[0]}, İsim: {hasta[1]}, Kimlik No: {identity},  Doktor Adı: {hasta[4]}, Triage Color: {hasta[5]}")
+    def list_patients(self):
+        self.cursor.execute("SELECT * FROM Patients")
+        patients = self.cursor.fetchall()
+        print(f"\n***** {self.table_name.upper()} *****")
+        for patient in patients:
+            identity = patient[3][:3] + '*' * (len(patient[3] - 3))
+            print(f"No: {patient[0]}, Name: {patient[1]}, ID No: {identity},  Doctor Name: {patient[4]}, Triage Color: {patient[5]}")
 
     def patient(self):
-        self.cursor.execute('SELECT * FROM Hasta')
+        self.cursor.execute('SELECT * FROM Patients')
         patients = self.cursor.fetchall()
         return patients
     
     @staticmethod
     def is_there_patient(identity):
-        conn = sqlite3.connect('hastane.db')
+        conn = sqlite3.connect('hospital.db')
         cursor = conn.cursor()
-        result = cursor.execute('SELECT EXISTS(SELECT * FROM Hasta WHERE identity=?)', (identity,))
+        result = cursor.execute('SELECT EXISTS(SELECT * FROM Patients WHERE identity=?)', (identity,))
         exists = result.fetchone()[0]
         conn.close()
         return exists
 
     @staticmethod
-    def hasta_iptal(identity):
-        conn = sqlite3.connect('hastane.db')
+    def cancel_patient(identity):
+        conn = sqlite3.connect('hospital.db')
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM Hasta WHERE identity=?', (identity,))
+        cursor.execute('DELETE FROM Patients WHERE identity=?', (identity,))
         conn.commit()
         conn.close()
-        print(f"Hasta {identity} iptal edildi.")
+        print(f"Patient with {identity} id no is cancelled.")

@@ -1,17 +1,17 @@
 import sqlite3
 
-class Hasta:
-    def __init__ (self):
-        self.conn = sqlite3.connect('hastane.db')
+class Patient:
+    def __init__(self):
+        self.conn = sqlite3.connect('hospital.db')
         self.cursor = self.conn.cursor()
         self.create_table()
         
     def create_table(self):
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Hasta (
+            CREATE TABLE IF NOT EXISTS Patients (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                bithdate DATE NOT NULL,
+                birthdate DATE NOT NULL,
                 identity VARCHAR(11) NOT NULL,
                 specialization VARCHAR(150) NOT NULL,
                 doctor_name VARCHAR(150) NOT NULL,
@@ -20,32 +20,32 @@ class Hasta:
         ''')
         self.conn.commit()
 
-    def hasta_ekle(self, name, birthdate, identity, specialization, doctor_name, triage_color):
-        self.cursor.execute(f"INSERT INTO {self.tablo_adi} (name, birthdate, identity, specialization, doctor_name, triage_color) VALUES (?, ?, ?, ?, ?, ?)", (name, birthdate, identity, specialization, doctor_name, triage_color))
+    def add_patient(self, name, birthdate, identity, specialization, doctor_name, triage_color):
+        self.cursor.execute(f"INSERT INTO {self.table_name} (name, birthdate, identity, specialization, doctor_name, triage_color) VALUES (?, ?, ?, ?, ?, ?)", (name, birthdate, identity, specialization, doctor_name, triage_color))
         self.conn.commit()
-        print(f"{name} eklendi.")
+        print(f"{name} is added.")
 
-    def hasta_iptal(self, identity):
-        self.cursor.execute(f"DELETE FROM {self.tablo_adi} WHERE identity=?", (identity,))
+    def cancel_patient(self, identity):
+        self.cursor.execute(f"DELETE FROM {self.table_name} WHERE identity=?", (identity,))
         self.conn.commit()
-        print(f"{identity} kimlik numaralı hasta silindi.")
+        print(f"Patient with {identity} id no is cancelled.")
 
-    def hasta_guncelle(self, name, birthdate, identity, specialization, doctor_name, triage_color):
-        self.cursor.execute(f"UPDATE {self.tablo_adi} SET name=?, birthdate=?, identity=?, specialization=?, doctor_name=?, triage_color=? WHERE identity=?", (name, birthdate, identity, specialization, doctor_name, triage_color, identity))
+    def update_patient(self, name, birthdate, identity, specialization, doctor_name, triage_color):
+        self.cursor.execute(f"UPDATE {self.table_name} SET name=?, birthdate=?, identity=?, specialization=?, doctor_name=?, triage_color=? WHERE identity=?", (name, birthdate, identity, specialization, doctor_name, triage_color, identity))
         self.conn.commit()
-        print(f"{identity} kimlik numaralı hasta güncellendi.")
+        print(f"Patient with {identity} id no is updated.")
 
-    def hastalari_listele(self):
-        self.cursor.execute("SELECT * FROM Hasta")
-        hastalar = self.cursor.fetchall()
-        print(f"\n***** {self.tablo_adi.upper()} *****")
-        for hasta in hastalar:
-            identity  = hasta[3][:3] + '*' * (len(hasta[3] - 3))
-            print(f"Sıra No: {hasta[0]}, İsim: {hasta[1]}, Kimlik No: {identity},  Doktor Adı: {hasta[4]}, Triage Color: {hasta[5]}")
+    def list_patients(self):
+        self.cursor.execute("SELECT * FROM Patients")
+        patients = self.cursor.fetchall()
+        print(f"\n***** {self.table_name.upper()} *****")
+        for patient in patients:
+            identity = patient[3][:3] + '*' * (len(patient[3] - 3))
+            print(f"Sıra No: {patient[0]}, İsim: {patient[1]}, Kimlik No: {identity},  Doktor Adı: {patient[4]}, Triage Color: {patient[5]}")
 
-class Doktor:
+class Doctor:
     def __init__(self):
-        self.conn = sqlite3.connect('hastane.db')
+        self.conn = sqlite3.connect('hospital.db')
         self.cursor = self.conn.cursor()
         self.create_table()
         
@@ -53,7 +53,7 @@ class Doktor:
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Doctors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            doktor_name VARCHAR(150) NOT NULL,
+            doctor_name VARCHAR(150) NOT NULL,
             doctor_surname VARCHAR(150) NOT NULL,
             academic_rank VARCHAR(100) NOT NULL,
             specialization VARCHAR(150) NOT NULL,
@@ -62,113 +62,70 @@ class Doktor:
             ''')
         self.conn.commit()
         
-    def add_doctor(self, doktor_name, doctor_surname, academic_rank, specialization, password):
-        self.cursor.execute("INSERT INTO Doctors (doktor_name, doctor_surname, academic_rank, specialization, password) VALUES (?, ?, ?, ?, ?)",(doktor_name, doctor_surname, academic_rank, specialization, password))
+    def add_doctor(self, doctor_name, doctor_surname, academic_rank, specialization, password):
+        self.cursor.execute("INSERT INTO Doctors (doctor_name, doctor_surname, academic_rank, specialization, password) VALUES (?, ?, ?, ?, ?)", (doctor_name, doctor_surname, academic_rank, specialization, password))
         self.conn.commit()                    
-        print(f"{doktor_name} {doctor_surname} başarılı bir şekilde eklendi.")
+        print(f"{doctor_name} {doctor_surname} is updated successfully.")
         
-    def update_docotr(self, doktor_name, doctor_surname, academic_rank, specialization, password):
-        self.cursor.execute("UPDATE Doctors SET doktor_name=?, doctor_surname=?, academic_rank=?, specialization=?, password=?",(self, doktor_name, doctor_surname, academic_rank, specialization, password))
+    def update_doctor(self, doctor_name, doctor_surname, academic_rank, specialization, password):
+        self.cursor.execute("UPDATE Doctors SET doctor_name=?, doctor_surname=?, academic_rank=?, specialization=?, password=?", (self, doctor_name, doctor_surname, academic_rank, specialization, password))
                             
     def show_doctors(self):
         self.cursor.execute("SELECT * FROM Doctors")
-        doctors = self.cursor.execute.fetchall()
+        doctors = self.cursor.fetchall()
         print("\n***** Doctors.upper() *****")
         for doctor in doctors:
             print(f"Doctor Name : {doctor[1]}, Doctor Surname : {doctor[2]}, Doctor's Academic Rank : {doctor[3]}, Doctor's specialization : {doctor[4]}")
             
-    def ilac_yazma(self):
+    def preparing_prescription(self):
         pass
-            
-class Hastane:
+
+
+class Hospital:
     def __init__(self):
-        self.conn = sqlite3.connect('hastane.db')
+        self.conn = sqlite3.connect('hospital.db')
         self.cursor = self.conn.cursor()
-        self.hasta = Hasta()
-        self.doktor = Doktor()
+        self.patient = Patient()
+        self.doctor = Doctor()
         passwords = ["12345678"]
         
-    def kayıt_olustur(self):
-        name = input("Hastanın Adı Soyadı:")
-        birthdate = input("Hastanın doğum yılı:")
-        identity = input("Kimlik No:")
-        specialization = input("Gidilecek uzmanlık: ")
-        doctor_name= input("Doktor Adı: ")
-        triage_color = input("Hastanın acil durumu: ")
-        count = self.cursor.execute('SELECT COUNT(*) FROM Doctors WHERE doktor_name=?', (doctor_name,))
+    def add_patient(self):
+        name = input("Patient Name:")
+        birthdate = input("Patient Birthdate:")
+        identity = input("ID No:")
+        specialization = input("Required specialization: ")
+        doctor_name= input("Doctor Name: ")
+        triage_color = input("Triage color of the patient: ")
+        count = self.cursor.execute('SELECT COUNT(*) FROM Doctors WHERE doctor_name=?', (doctor_name,))
         count = self.cursor.fetchone()[0]
-        if count>0:
-            self.hasta.hasta_ekle(name, birthdate, identity, specialization, doctor_name, triage_color)
+        if count > 0:
+            self.patient.add_patient(name, birthdate, identity, specialization, doctor_name, triage_color)
         else:
-            print("Böyle bir doktor bulunamamıştır.")
+            print("There is no such doctor in the database.")
                             
-    def doktor_ekle(self):
-        doktor_name= input("Doktorun Adını Giriniz: ")
-        doctor_surname = input("Doktorun Soyadını Giriniz: ")
-        academic_rank = input("Doktorun akademik unvanı giriniz: ")                
-        specialization = input("Doktorun uzmanlık alannını giriniz: ")
-        password = input("Doktorun kullanacağı şifreyi giriniz: ")
-        self.doktor.add_doctor(doktor_name, doctor_surname, academic_rank, specialization, password)
+    def add_doctor(self):
+        doctor_name= input("Doctor Name: ")
+        doctor_surname = input("Doctor Surname: ")
+        academic_rank = input("Doctor Academical Rank: ")
+        specialization = input("Specialization of the doctor: ")
+        password = input("Password of the doctor: ")
+        self.doctor.add_doctor(doctor_name, doctor_surname, academic_rank, specialization, password)
         self.passwords.append(password)
     
-    def doktor_güncelle(self):
-        doktor_name= input("Doktorun Adını Giriniz: ")
-        doctor_surname = input("Doktorun Soyadını Giriniz: ")
-        academic_rank = input("Doktorun akademik unvanı giriniz: ")                
-        specialization = input("Doktorun uzmanlık alannını giriniz: ")
-        password = input("Yeni şifreyi giriniz: ")  
-        self.doktor.update_docotr(doktor_name, doctor_surname, academic_rank, specialization, password)
+    def update_doctor(self):
+        doctor_name= input("Doctor Name: ")
+        doctor_surname = input("Doctor Surname: ")
+        academic_rank = input("Doctor Academical Rank: ")
+        specialization = input("Specialization of the doctor: ")
+        password = input("New Password of the doctor: ")
+        self.doctor.update_doctor(doctor_name, doctor_surname, academic_rank, specialization, password)
         
-    def id_cevir(self, kimlik_numarası):
+    def get_id(self, identity):
         self.cursor.execute('SELECT * FROM Hasta WHERE identity=?',(identity,))
-        hasta = self.cursor.fetchall()
-        if hasta:
+        patient = self.cursor.fetchall()
+        if patient:
             return True
         else:
             return False
         
-hasta = Hasta()
-doktor = Doktor()
-hastane = Hastane()
-while True:
-    sifre = input("Şifrenizi giriniz :")
-    if sifre == "12345678":
-        print(20*"*","Hasta-Kayıt Sistemi",20*"*")
-        print("""
-    1. Yeni Hasta kabul
-    2. Hasta Güncelleme
-    3. Hasta Kayıt Silme""")
-        islem = input("/nYapılacak işlemi girini<: ")
-        if islem == "1":
-            hastane.kayıt_olustur()
-        elif islem == "2":
-            hasta.hastalari_listele()
-            kimlik_numarası = input("Güncellemek istenen hastanın kimlik numarasını giriniz: ")
-            hasta = hastane.id_cevir(kimlik_numarası)
-            if hasta == True:
-                name = input("Hastanın Adı Soyadı:")
-                birthdate = input("Hastanın doğum yılı:")
-                identity = input("Kimlik No:")
-                specialization = input("Gidilecek uzmanlık: ")
-                doctor_name= input("Doktor Adı: ")
-                triage_color = input("Hastanın acil durumu: ")
-                hasta.hasta_guncelle(name, birthdate, identity, specialization, doctor_name, triage_color)
-            else:
-                print("Böyle bir kişi bulunamadı.")
-        elif islem =="3":
-            kimlik_numarası = input("İptal edilmek istenen hastanın kimlik numarasını giriniz: ")
-            hasta = hastane.id_cevir(kimlik_numarası)
-            if hasta == True:
-                hasta.hasta_iptal(kimlik_numarası)
-            else:
-                print("Böyle bir hasta bulunmadı.")
-        elif islem == "Q" or islem == "q" or islem == "0":
-            continue
-        else:
-            print("Lütfen 1-3 arası bir tuş giriniz.")
-    elif sifre== "87654321":
-        print(20*"*","Doktor Sistemi", 20*"*")
-        print("""
-    1. Hasta Çağır
-    2. Bilgilerimi Güncelle""")
-        islem = input("/nYapılacak işlemi girini<: ")
+
