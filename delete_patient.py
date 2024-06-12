@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import Hasta
+import Patient
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -60,8 +60,8 @@ class Ui_MainWindow(object):
 
     def delete_patient(self):
         identity = self.txt_ide.text()
-        if Hasta.Hasta.is_there_patient(identity):
-            Hasta.Hasta.hasta_iptal(identity)
+        if Hasta.Patient.is_there_patient(identity):
+            Hasta.Patient.cancel_patient(identity)
             print("Hasta silindi.")
         else:
             print("Böyle bir hasta bulunamadı.")
