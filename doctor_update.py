@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
-        self.doctor = Doctor.Doctor()
+        self.doctor = Doctor.Doktor()
         
         # Add items to combo boxes
         self.box_new_aca_rank.addItems(Doctor.academic_rank)
@@ -92,13 +92,13 @@ class Ui_MainWindow(object):
         self.btn_dctr_update.setText(_translate("MainWindow", "Update"))
     
     def update_doctor(self):
-        new_doctor_name = self.txt_new_dctr_name.text()
+        new_doktor_name = self.txt_new_dctr_name.text()
         new_doctor_surname = self.txt_new_dctr_surname.text()
         new_academic_rank = self.box_new_aca_rank.currentText()
         new_specialization = self.box_new_dctr_spe.currentText()
         new_password = self.txt_new_pass.text()
         
-        self.doctor.update_doctor(new_doctor_name, new_doctor_surname, new_academic_rank, new_specialization, new_password)
+        self.doctor.update_doctor(new_doktor_name, new_doctor_surname, new_academic_rank, new_specialization, new_password)
 
         # Optionally, you can add a message box to confirm the update
         QtWidgets.QMessageBox.information(None, "Success", "Doctor updated successfully.")

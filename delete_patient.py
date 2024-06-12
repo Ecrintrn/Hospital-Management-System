@@ -9,9 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import Patient
+import Hasta
 
-class Ui_MainWindow(object):
+class Ui_DeletePatient(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(212, 131)
@@ -60,8 +60,8 @@ class Ui_MainWindow(object):
 
     def delete_patient(self):
         identity = self.txt_ide.text()
-        if Hasta.Patient.is_there_patient(identity):
-            Hasta.Patient.cancel_patient(identity)
+        if Hasta.Hasta.is_there_patient(identity):
+            Hasta.Hasta.hasta_iptal(identity)
             print("Hasta silindi.")
         else:
             print("Böyle bir hasta bulunamadı.")
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = Ui_DeletePatient()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

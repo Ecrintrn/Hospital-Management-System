@@ -58,8 +58,8 @@ class Ui_MainWindow(object):
         self.lbl_sifre.setText(_translate("MainWindow", "Type your password"))
         self.menuGiri.setTitle(_translate("MainWindow", "Hastane"))
 
-    def __init__(self):
-        self.conn = sqlite3.connect('hospital.db')
+    def __init__ (self):
+        self.conn = sqlite3.connect('hastane.db')
         self.cursor = self.conn.cursor()
         self.passwords = ["12345678"]
         
@@ -69,7 +69,7 @@ class Ui_MainWindow(object):
             self.ui = Ui_ShowPatient()
             self.ui.setupUi(self.main_window)
             self.main_window.show()
-            self.centralwidget.window().close()  # Closes the current window
+            self.centralwidget.window().close() # Mevcut pencereyi kapat
 
         elif self.lbl_sifre == self.passwords[1]:
             pass

@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.doctor = Doctor.Doctor()
+        self.doctor = Doctor.Doktor()
 
         self.box_aca_rank.addItems(self.doctor.academic_rank)
         self.box_dctr_spe.addItems(self.doctor.specialization)

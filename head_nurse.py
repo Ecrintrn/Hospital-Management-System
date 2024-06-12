@@ -57,4 +57,4 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Update Password"))
 
     def open_add_doctor(self):
-        pass
+        
